@@ -7,7 +7,7 @@ My solution is based on the latest modeling from the previous competition and st
 
 ##  Model and loss function
 
-I used the same model and loss as the winner team of the previous competition as a base. Since I had only single RTX 3080, I hadn't enough time to experiment with that and change it. The only things I managed to test is Subcenter ArcMarginProduct as the last block of model and ArcFaceLossAdaptiveMargin loss function, which has been used by the 2nd place team in the previous year. Both those things gave me a signifact score boost (around 4% on CV and 5% on LB). 
+I used the same model and loss as the winner team of the previous competition as a base. Since I had only single RTX 3080, I hadn't enough time to experiment with that and change it. The only things I managed to test is `Subcenter ArcMarginProduct` as the last block of model and `ArcFaceLossAdaptiveMargin` loss function, which has been used by the 2nd place team in the previous year. Both those things gave me a signifact score boost (around 4% on CV and 5% on LB). 
 
 ## Setting up the training and validation
 
@@ -17,17 +17,17 @@ Scheduler - CosineAnnealingLR (T_max=12) + 1 epoch Warm-Up
 
 ### Training stages
 I found the best perfomance in training for 15 epochs and 5 stages:  
-I (1-3) - Resize to image size, Horizontal Flip  
-II (4-6) - Resize to bigger image size, Random Crop to image size, Horizontal Flip  
-III (7-9) - Resize to bigger image size, Random Crop to image size, Horizontal Flip, Coarse Dropout with one big square (CutMix)  
-IV (10-12) - Resize to bigger image size, Random Crop to image size, Horizontal Flip, FMix, CutMix, MixUp  
-V (13-15) - Resize to bigger image size, Random Crop to image size, Horizontal Flip  
+1. (1-3) - Resize to image size, Horizontal Flip  
+2. (4-6) - Resize to bigger image size, Random Crop to image size, Horizontal Flip  
+3. (7-9) - Resize to bigger image size, Random Crop to image size, Horizontal Flip, Coarse Dropout with one big square (CutMix)  
+4. (10-12) - Resize to bigger image size, Random Crop to image size, Horizontal Flip, FMix, CutMix, MixUp  
+5. (13-15) - Resize to bigger image size, Random Crop to image size, Horizontal Flip  
 
 I used default Normalization on all the epochs.
 
 ### Validation scheme
 
-Since I hadn't enough hardware, this became my first competition where I wasn't able to use a K-fold validation, but at least I saw stable CV and CV/LB correlation at the previous competitions, so I used simple stratified train-test split in 0.8, 0.2 ratio.
+Since I hadn't enough hardware, this became my first competition where I wasn't able to use a K-fold validation, but at least I saw stable CV and CV/LB correlation at the previous competitions, so I used simple stratified train-test split in 0.8, 0.2 ratio. I also oversampled all the samples up to 5 for each class.
 
 ## Inference and Post-Processing:
 
